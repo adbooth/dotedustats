@@ -15,25 +15,25 @@ class EduSpider(scrapy.Spider):
 
     def __init__(self):
         scrapy.Spider.__init__(self)
-
         baseurl = "https://domaintyper.com/top-websites/most-popular-websites-with-edu-domain/page/"
-        self.start_urls = [baseurl + str(i) for i in xrange(1, 3)]
+        self.start_urls = [baseurl + str(i) for i in xrange(1, 2)]
         self.domain = 'domaintyper.com'
-        self.exporter = JsonLinesItemExporter(open('schools.jl', 'wb+'))
+        self.exporter = JsonLinesItemExporter(open('/Users/AndrewDBooth/Development/web/andrewdbooth/static/scenes/unipagestats/schools.jl', 'wb+'))
 
-    # def parse(self, response):
-    #     self.exporter.start_exporting()
-    #     urls = [url.encode('utf-8') for url in response.css('.wsTR > td:nth-child(2)').xpath('text()').extract()]
-    #     for url in urls:
-    #         fullurl = 'http://www.' + url + '/'
-    #         yield scrapy.Request(fullurl, callback=self.parse_edu_site)
-    #
-    # def parse_edu_site(self, response):
     def parse(self, response):
+        self.exporter.start_exporting()
+        urls = [url.encode('utf-8') for url in response.css('.wsTR > td:nth-child(2)').xpath('text()').extract()]
+        for url in urls:
+            fullurl = 'http://www.' + url + '/'
+            yield scrapy.Request(fullurl, callback=self.parse_edu_site)
+
+    def parse_edu_site(self, response):
+    # def parse(self, response):
         data = SiteData()
         tc = TagCounter()
 
         # Fill summary fields
+        data['url'] = response.url
         data['domain'] = '.'.join(response.url.split('/')[2].split('.')[-2:])
         data['name'] = data['domain'].split('.')[0]
         data['title'] = response.xpath('//title/text()').extract()[0].encode('utf-8')

@@ -3,6 +3,7 @@ import scrapy
 
 class SiteData(scrapy.Item):
     # Summary Fields
+    url = scrapy.Field()
     name = scrapy.Field()
     domain = scrapy.Field()
     title = scrapy.Field()
