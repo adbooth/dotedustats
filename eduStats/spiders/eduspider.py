@@ -16,9 +16,11 @@ class EduSpider(scrapy.Spider):
     def __init__(self):
         scrapy.Spider.__init__(self)
         baseurl = "https://domaintyper.com/top-websites/most-popular-websites-with-edu-domain/page/"
+        logpath = '/home/www/flasksite/static/scenes/unipagestats/schools.jl'
+
         self.start_urls = [baseurl + str(i) for i in xrange(1, 2)]
         self.domain = 'domaintyper.com'
-        self.exporter = JsonLinesItemExporter(open('/Users/AndrewDBooth/Development/web/andrewdbooth/static/scenes/unipagestats/schools.jl', 'wb+'))
+        self.exporter = JsonLinesItemExporter(open(logpath, 'wb+'))
 
     def parse(self, response):
         self.exporter.start_exporting()
@@ -28,7 +30,6 @@ class EduSpider(scrapy.Spider):
             yield scrapy.Request(fullurl, callback=self.parse_edu_site)
 
     def parse_edu_site(self, response):
-    # def parse(self, response):
         data = SiteData()
         tc = TagCounter()
 
