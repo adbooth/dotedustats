@@ -15,10 +15,10 @@ class EduSpider(scrapy.Spider):
 
     def __init__(self):
         scrapy.Spider.__init__(self)
-        baseurl = "https://domaintyper.com/top-websites/most-popular-websites-with-edu-domain/page/"
+        baseurl = 'https://domaintyper.com/top-websites/most-popular-websites-with-edu-domain/page/'
         logpath = '/home/www/flasksite/static/scenes/unipagestats/schools.jl'
 
-        self.start_urls = [baseurl + str(i) for i in xrange(1, 2)]
+        self.start_urls = [baseurl + str(i) for i in xrange(1, 30)]
         self.domain = 'domaintyper.com'
         self.exporter = JsonLinesItemExporter(open(logpath, 'wb+'))
 
